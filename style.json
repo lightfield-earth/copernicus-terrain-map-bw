@@ -6592,7 +6592,7 @@
           "Open Sans Italic",
           "Noto Sans Italic"
         ],
-        "text-size": 10,
+        "text-size": 12,
         "text-field": [
           "coalesce",
           [

@@ -191,7 +191,11 @@ const PRINT = {
   "River intermittent": { paint: { "line-color": STREAM } },
   "Other waterway": { paint: { "line-color": STREAM, "line-width": { base: 1.2, stops: [[10, 0.5], [13, 0.9], [20, 4]] } } },
   "Other waterway intermittent": { paint: { "line-color": STREAM } },
-  "River labels": WATER_TEXT, "Lakeline labels": WATER_TEXT, "Ocean labels": WATER_TEXT,
+  "River labels": WATER_TEXT, "Lakeline labels": WATER_TEXT,
+  // Point water names (seas, straits, narrows) were a fixed 10 px, smaller than any bay or inlet name
+  // ("Salish Sea" under "Saanich Inlet"). The tiles class seas and narrows alike as `strait`, with no size
+  // attribute, so match the 12 px line labels rather than guess which is big.
+  "Ocean labels": { layout: { ...WATER_TEXT.layout, "text-size": 12 }, paint: WATER_TEXT.paint },
   "City labels": PLACE_TEXT, "Town labels": PLACE_TEXT, "Village labels": PLACE_TEXT,
   "Other labels": { paint: { ...PLACE_TEXT.paint, "text-color": g(25) } },
   "National park labels": { paint: { "text-color": g(28), "text-halo-color": g(100), "text-halo-width": 1.2 } },
