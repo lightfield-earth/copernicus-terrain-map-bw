@@ -185,7 +185,7 @@ const STREAM = g(52);
 const PRINT = {
   // Water: the base style has no water fill, only a pale shoreline, so lakes (Sooke Lake) vanished
   // into the white land. A light fill (added below) plus a darker shoreline; pens still read on it.
-  "Water fill": { paint: { "fill-color": g(92) } },
+  "Water fill": { paint: { "fill-color": g(94) } },
   "Water": { paint: { "line-color": g(50), "line-width": 0.75 } },
   "River": { paint: { "line-color": STREAM } },
   "River intermittent": { paint: { "line-color": STREAM } },
@@ -198,6 +198,25 @@ const PRINT = {
   "Military boundary": { paint: { "line-dasharray": [3, 2] } },
   "Dam": { paint: { "fill-color": g(72) } },   // the brown fill went to a dark blob (Sooke Lake's dams)
 };
+// Roads: the luminance mapping scrambled the class order (secondary's yellow came out darker than
+// primary's orange) and every casing landed near the same mid-gray. Step them evenly by class instead:
+// below z11 (no casings) one line per class, darkest for highways; from z11 a fill and casing pair.
+// Widths stay the base style's. Minor/service streets keep their STREET_* treatment above.
+const ROAD_GRAYS = {   // [single line below z11, fill, casing]
+  Highway:   [45, 58, 28],
+  Trunk:     [55, 70, 34],
+  Primary:   [62, 82, 40],
+  Secondary: [70, 92, 46],
+  Tertiary:  [76, 100, 55],
+};
+for (const l of out) {
+  const m = l.id.match(/^(Highway|Trunk|Primary|Secondary|Tertiary) (road|bridge|road link|link bridge|link)( outline)?$/);
+  if (!m) continue;
+  const [low, fill, casing] = ROAD_GRAYS[m[1]];
+  l.paint["line-color"] = m[3] ? { stops: [[10.9, "rgba(255, 255, 255, 0)"], [11, g(casing)]] }
+                               : { stops: [[10.9, g(low)], [11, g(fill)]] };
+}
+
 // Water fill sits just above the hillshade, so it also blanks the DEM's noise over open water.
 out.splice(out.indexOf(hillshade) + 1, 0, { id: "Water fill", type: "fill", source: "openmaptiles",
   "source-layer": "water", filter: ["all", ["==", "$type", "Polygon"], ["!=", "brunnel", "tunnel"]], paint: {} });
