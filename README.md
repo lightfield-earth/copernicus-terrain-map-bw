@@ -2,7 +2,11 @@
 
 A grayscale version of the Copernicus GLO-30 terrain map ([terrain.lightfield.earth](https://terrain.lightfield.earth)),
 styled for printing on paper that workshop participants draw on with colored pens. Live at
-https://terrain-bw.lightfield.earth (opens on Greater Victoria, BC).
+https://terrain-bw.lightfield.earth.
+
+This is the general-purpose grayscale style. Regional maps build on it by loading its `style.json`
+rather than copying it: see `../victoria-terrain-map` (victoria.lightfield.earth). Keep `style.json`
+and `sprites/` at these paths, since those maps depend on them.
 
 The design rule: **the map has zero chroma.** Every color is a neutral gray, so on a scanned sheet any
 colored pixel is ink, which is what lets pen annotations be segmented off and digitized later. The build
